@@ -101,8 +101,8 @@ class USBdevSetup(threading.Thread):
 			usbdev = usb.core.find(idVendor=0x18d1, idProduct=0x2d02) #make sure device is still present
 			if usbdev is None:
 				logger.debug('No USB device found in peroidic check...exiting')
-				sys.exit(1)#os._exit(1) #device is no longer present, kill program
-			time.sleep(30)	
+				os._exit(1) #sys.exit(1)#os._exit(1) #device is no longer present, kill program
+			time.sleep(2)	
 	def __del__(self):
 		global usbdev
 		#unregister HID Device, ACCESSORY_UNREGISTER_HID = 55
@@ -123,7 +123,7 @@ class AOA2HID(threading.Thread):
                 logger.debug(usbdev)
                 if usbdev is None:
                     logger.debug('No USB device...exiting')
-                    sys.exit(1) #os._exit() #device is no longer present, kill program 
+                    os._exit() #sys.exit(1) #os._exit() #device is no longer present, kill program 
                     threadEvent.clear() #put this here for now so it doesnt go into a infine loop
                 else:
                     usbdev.ctrl_transfer(0x40, 57,0x10, 0,self.cmd,1000)
@@ -162,6 +162,7 @@ hid = AOA2HID()
 hid.daemon = True
 hid.cmd = Play_cmd
 hid.start()
+threadEvent.set() #send play command
 
 while True:
 	# Fetching the Arb ID, DLC and Data

@@ -11,6 +11,17 @@
 #        samplerate, simple
 
 
-(sleep 3s ; alsaloop -P hw:1,0,0 -C hw:2,0,0 -f S16_LE -r 44100 -t 50000 -S 2 -v -v -v)&
-(sleep 3s ; /usr/local/bin/aoa2hid.py 18d1 2d02)
-(sleep 3s ; /usr/local/bin/python3.3 /usr/local/bin/CANAOA2ctrl.py)&
+(sleep 3s ; alsaloop -P hw:1,0,0 -C hw:2,0,0 -f S16_LE -r 44100 -t 50000 -S 2)&
+#(sleep 3s ; /usr/local/bin/aoa2hid.py 18d1 2d02)
+
+#
+if /bin/grep --quiet BB-DCAN1 /sys/devices/bone_capemgr.*/slots; then
+  #CAN is already setup, just run CAN interface code
+  (sleep 3s ; /usr/local/bin/python3.3 /usr/local/bin/CANAOA2ctrl.py)&
+else
+  /bin/echo BB-DCAN1 > /sys/devices/bone_capemgr.*/slots
+  sleep 0.1s
+  /bin/ip link set can0 type can bitrate 100000 triple-sampling on
+  /bin/ip link set can0 up
+  (sleep 3s ; /usr/local/bin/python3.3 /usr/local/bin/CANAOA2ctrl.py)&
+fi
