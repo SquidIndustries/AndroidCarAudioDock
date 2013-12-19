@@ -25,7 +25,9 @@ Suggested hardware
 -Greater than 1A car USB power adapter
 -logic supply beagle bone black case
 picture of my setup. I have cut and soldered all the cords to shorter lengths.
+
 http://imgur.com/kSC9rrV
 
 to give credit where credit is due the following has been referenced in creation of this project
+
 http://blog.jfedor.org/2013/01/usb-audio-dock-for-android.html
