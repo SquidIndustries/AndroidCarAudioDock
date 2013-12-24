@@ -12,5 +12,5 @@
 #        samplerate, simple
 
 
-(sleep 3s ; alsaloop -P hw:1,0,0 -C hw:2,0,0 -f S16_LE -r 44100 -t 50000 -S 5) & (sleep 3s ; /home/debian/AndroidCarAudioDock/start_play.py 18d1 2d02)&
+(sleep 3s ; alsaloop -P hw:1,0,0 -C hw:2,0,0 -f S16_LE -r 44100 -t 50000 -S 3) & (sleep 3s ; /home/debian/AndroidCarAudioDock/start_play.py 18d1 2d02)&
 
