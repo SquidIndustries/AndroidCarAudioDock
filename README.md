@@ -69,7 +69,7 @@ Reboot or log out of all sessions and then log in again so new permissions take 
 * [Logic supply beagle bone black case](http://www.amazon.com/gp/product/B00EO7JYTS/ref=oh_details_o00_s01_i00?ie=UTF8&psc=1)
 
 [Picture](http://imgur.com/kSC9rrV) of my setup. I have cut and soldered all the cords to shorter lengths.
-![Alt text](http://imgur.com/kSC9rrV)
+![Alt text](http://imgur.com/kSC9rrV "test")
 
 
 #### Reference
