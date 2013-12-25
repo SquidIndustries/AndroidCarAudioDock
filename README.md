@@ -53,24 +53,25 @@ Reboot or log out of all sessions and then log in again so new permissions take 
     cd AndroidCarAudioDock
     sudo ./install.sh
 
-### To do
+#### To do
 
 * improve documentation
 * implement CAN interface for receiving steering wheel button presses from BMW e90 CAN bus
 * add bluetooth A2DP source
 * add shairplay to support apple air play
 
-Suggested hardware
+#### Suggested hardware
 
 * [Beaglebone Black](http://beagleboard.org/Products/BeagleBone+Black)
 * [PCM2704 based USB DAC](http://www.amazon.com/gp/product/B00F7IHKC6/ref=oh_details_o07_s01_i01?ie=UTF8&psc=1)
 * [Small 4 Port USB hub](http://www.amazon.com/gp/product/B004PBDMA0/ref=oh_details_o07_s01_i00?ie=UTF8&psc=1)
-* Greater than 1A car USB power adapter
+* Greater than or equal to 1A USB power adapter
 * [Logic supply beagle bone black case](http://www.amazon.com/gp/product/B00EO7JYTS/ref=oh_details_o00_s01_i00?ie=UTF8&psc=1)
 
 [Picture](http://imgur.com/kSC9rrV) of my setup. I have cut and soldered all the cords to shorter lengths.
+![Alt text](http://imgur.com/kSC9rrV)
+
 
 #### Reference
 * [Jacek Fedoryński USB Audio Dock](http://blog.jfedor.org/2013/01/usb-audio-dock-for-android.html)
 * [Android AOA2 Documentation](http://source.android.com/accessories/aoa2.html)
-
