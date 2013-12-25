@@ -10,7 +10,7 @@ USB audio over AOA2 is supported on all android devices 4.1 and up.
 * play/pause command is sent to device when audio link is made. This should make the last open sound application start playing
 * Tested with Nexus 5 and Samsung S4, other devices can be added to udev rule file dock.rules
 
-### Installation
+## Installation
 
 #### OS
 
@@ -46,32 +46,31 @@ Reboot or log out of all sessions and then log in again so new permissions take 
     cd pyusb
     sudo python setup.py install
 
-Install AndroidCarAudioDock
----------------------------
-cd ~/
-git clone https://github.com/SquidIndustries/AndroidCarAudioDock.git
-cd AndroidCarAudioDock
-sudo ./install.sh
+#### Install AndroidCarAudioDock
 
-To do
-=====
+    cd ~/
+    git clone https://github.com/SquidIndustries/AndroidCarAudioDock.git
+    cd AndroidCarAudioDock
+    sudo ./install.sh
+
+### To do
+
 * improve documentation
 * implement CAN interface for receiving steering wheel button presses from BMW e90 CAN bus
 * add bluetooth A2DP source
 * add shairplay to support apple air play
 
 Suggested hardware
-==================
-* beaglebone black
-* PCM2704 based USB DAC
-* Small 4 Port USB hub
+
+* [Beaglebone Black](http://beagleboard.org/Products/BeagleBone+Black)
+* [PCM2704 based USB DAC](http://www.amazon.com/gp/product/B00F7IHKC6/ref=oh_details_o07_s01_i01?ie=UTF8&psc=1)
+* [Small 4 Port USB hub](http://www.amazon.com/gp/product/B004PBDMA0/ref=oh_details_o07_s01_i00?ie=UTF8&psc=1)
 * Greater than 1A car USB power adapter
-* logic supply beagle bone black case
+* [Logic supply beagle bone black case](http://www.amazon.com/gp/product/B00EO7JYTS/ref=oh_details_o00_s01_i00?ie=UTF8&psc=1)
 
-Picture of my setup. I have cut and soldered all the cords to shorter lengths.
+[Picture](http://imgur.com/kSC9rrV) of my setup. I have cut and soldered all the cords to shorter lengths.
 
-http://imgur.com/kSC9rrV
+#### Reference
+* [Jacek Fedoryński USB Audio Dock](http://blog.jfedor.org/2013/01/usb-audio-dock-for-android.html)
+* [Android AOA2 Documentation](http://source.android.com/accessories/aoa2.html)
 
-To give credit where credit is due the following has been referenced in creation of this project
-
-http://blog.jfedor.org/2013/01/usb-audio-dock-for-android.html
