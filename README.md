@@ -40,6 +40,7 @@ sudo ./install.sh
 
 To do
 =====
+* improve documentation
 * implement CAN interface for receiving steering wheel button presses from BMW e90 CAN bus
 * add bluetooth A2DP source
 * add shairplay to support apple air play
