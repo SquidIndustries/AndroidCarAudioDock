@@ -1,8 +1,7 @@
 AndroidCarAudioDock
 ===================
 
-Software for running a audio dock using Android Open Accessory Protocol 2
-
+Software for running a audio dock using Android Open Accessory Protocol 2.  
 USB audio over AOA2 is supported on all android devices 4.1 and up. 
 
 Current Features/limitations
@@ -15,13 +14,13 @@ Installation
 ============
 OS
 --
-if on beaglebone black, use Debian 7.2 image from http://www.armhf.com/index.php/boards/beaglebone-black/#wheezy
+if on beaglebone black, use Debian 7.2 image from http://www.armhf.com/index.php/boards/beaglebone-black/#wheezy  
 I used this version
 http://s3.armhf.com/debian/wheezy/bone/debian-wheezy-7.2-armhf-3.8.13-bone30.img.xz
 
-Install to device and boot up into os. 
-Then setup module dependancies
-sudo depmod -a -v "3.8.13-bone30"
+Install to device and boot up into os.  
+Then setup module dependancies  
+sudo depmod -a -v "3.8.13-bone30"  
 
 These directions should work on any debian based linux installation (including rasbian). You may need to remove pulseaudio if its installed though.
 
