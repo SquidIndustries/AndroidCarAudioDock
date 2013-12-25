@@ -2,7 +2,7 @@ AndroidCarAudioDock
 ===================
 
 Software for running a USB audio dock using Android Open Accessory Protocol 2.  
-USB audio over AOA2 is supported on all android devices 4.1 and up. 
+USB audio over AOA2 is supported on all Android devices with OS version 4.1 and up. 
 
 ### Current Features/limitations
 
@@ -23,7 +23,7 @@ Then setup module dependancies
 
     sudo depmod -a -v "3.8.13-bone30"  
 
-These directions should work on any debian based linux installation (including rasbian). You may need to remove pulseaudio and install alsa if its installed though.
+From this point on, these directions should work on any debian based linux installation (including rasbian). You may need to remove pulseaudio and install alsa if its installed though.
 
 #### Update & Install Necessary Software
 Update OS
@@ -54,13 +54,6 @@ Reboot or log out of all sessions and then log in again so new permissions take 
     cd AndroidCarAudioDock
     sudo ./install.sh
 
-#### To do
-
-* improve documentation
-* implement CAN interface for receiving steering wheel button presses from BMW e90 CAN bus
-* add bluetooth A2DP source
-* add shairplay to support apple air play
-
 #### Suggested hardware
 
 * [Beaglebone Black](http://beagleboard.org/Products/BeagleBone+Black)
@@ -76,3 +69,10 @@ Reboot or log out of all sessions and then log in again so new permissions take 
 #### Reference
 * [Jacek Fedoryński USB Audio Dock](http://blog.jfedor.org/2013/01/usb-audio-dock-for-android.html)
 * [Android AOA2 Documentation](http://source.android.com/accessories/aoa2.html)
+
+#### To do
+
+* improve documentation
+* implement CAN interface for receiving steering wheel button presses from BMW e90 CAN bus
+* add bluetooth A2DP source
+* add shairplay to support apple air play
