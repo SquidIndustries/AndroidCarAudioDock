@@ -4,7 +4,7 @@ AndroidCarAudioDock
 Software for running a audio dock using Android Open Accessory Protocol 2.  
 USB audio over AOA2 is supported on all android devices 4.1 and up. 
 
-## Current Features/limitations
+### Current Features/limitations
 
 * audio loopback device between android device and sound card are made both at boot up and when plugged in when booted
 * play/pause command is sent to device when audio link is made. This should make the last open sound application start playing
@@ -12,23 +12,34 @@ USB audio over AOA2 is supported on all android devices 4.1 and up.
 
 ### Installation
 
-OS
---
-if on beaglebone black, use Debian 7.2 image from http://www.armhf.com/index.php/boards/beaglebone-black/#wheezy  
-I used this version
-http://s3.armhf.com/debian/wheezy/bone/debian-wheezy-7.2-armhf-3.8.13-bone30.img.xz
+#### OS
+
+if on beaglebone black, use Debian 7.2 image from [armf.com](http://www.armhf.com/index.php/boards/beaglebone-black/#wheezy)  
+I used [this version](http://s3.armhf.com/debian/wheezy/bone/debian-wheezy-7.2-armhf-3.8.13-bone30.img.xz)
 
 Install to device and boot up into os.  
 Then setup module dependancies  
-sudo depmod -a -v "3.8.13-bone30"  
+    sudo depmod -a -v "3.8.13-bone30"  
 
-These directions should work on any debian based linux installation (including rasbian). You may need to remove pulseaudio if its installed though.
+These directions should work on any debian based linux installation (including rasbian). You may need to remove pulseaudio and install alsa if its installed though.
 
-Install pyusb
--------------
-git clone https://github.com/walac/pyusb
-cd pyusb
-sudo python setup.py install
+#### Update & Install Necessary Software
+Update OS
+    sudo apt-get update
+    sudo apt-get upgrade
+    sudo apt-get dist-upgrade
+Install git & alsa
+    sudo apt-get install git alsa-base alsa-utils
+Give debian user permission to use audio device.
+    sudo adduser debian audio
+Reboot or log out of all sessions and then log in again so new permissions take hold
+    sudo reboot
+
+#### Install pyusb
+
+    git clone https://github.com/walac/pyusb
+    cd pyusb
+    sudo python setup.py install
 
 Install AndroidCarAudioDock
 ---------------------------
