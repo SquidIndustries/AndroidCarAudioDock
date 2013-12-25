@@ -1,5 +1,7 @@
 AndroidCarAudioDock
 ===================
+![alt text](http://i.imgur.com/qwmLS3N.png "Diagram")
+
 
 Software for running a USB audio dock using Android Open Accessory Protocol 2.  
 USB audio over AOA2 is supported on all Android devices with OS version 4.1 and up. 
@@ -14,16 +16,22 @@ USB audio over AOA2 is supported on all Android devices with OS version 4.1 and 
 ## Installation
 
 #### OS
-
+### Beaglebone Black
 if on beaglebone black, use Debian 7.2 image from [armf.com](http://www.armhf.com/index.php/boards/beaglebone-black/#wheezy)  
 I used [this version](http://s3.armhf.com/debian/wheezy/bone/debian-wheezy-7.2-armhf-3.8.13-bone30.img.xz)
 
-Install to device and boot up into os.  
+Install to device and boot up into os using [these directions](http://www.armhf.com/index.php/getting-started-with-ubuntu-img-file/).  
 Then setup module dependancies
 
     sudo depmod -a -v "3.8.13-bone30"  
 
-From this point on, these directions should work on any debian based linux installation (including rasbian). You may need to remove pulseaudio and install alsa if its installed though.
+### Raspberry Pi
+
+Comming soon... should just need to install rasbian without desktop and follow directions from here. It might be necessary to uninstall pulseaudio and switch to alsa
+
+### Other
+
+From this point on, these directions should work on any debian based linux installation. You may need to remove pulseaudio and install alsa if its installed though.
 
 #### Update & Install Necessary Software
 Update OS
