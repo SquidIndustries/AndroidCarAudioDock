@@ -53,8 +53,8 @@ dev.ctrl_transfer(0x40, 56,0x10, 0, keyboardHid,1000)
 time.sleep(0.2) #need this pause or scipt crashes
 
 #m = [0x01] #Previous Track
-#m = [0x02] #Next Track
-m = [0x04] #Play/Pause
+m = [0x02] #Next Track
+#m = [0x04] #Play/Pause
 #m = [0x08] #Stop
 #m = [0x10] #Eject
   
@@ -69,6 +69,6 @@ dev.ctrl_transfer(0x40, 57,0x10, 0,m,1000)
 time.sleep(1)
 #unregister HID Device
 #ACCESSORY_UNREGISTER_HID = 55
-dev.ctrl_transfer(0x40, 55,0x10, 0, "")
+#dev.ctrl_transfer(0x40, 55,0x10, 0, "")
 
 

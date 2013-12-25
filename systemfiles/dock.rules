@@ -1,7 +1,7 @@
 #For when phone is a Media Device MTP
-ACTION=="add",SUBSYSTEM=="usb",ATTR{idVendor}=="18d1",ATTR{idProduct}=="4ee1",RUN+="/home/debian/AndroidCarAudioDock/phone_docked.sh %s{idVendor} %s{idProduct}"
+ACTION=="add",SUBSYSTEM=="usb",ATTR{idVendor}=="18d1",ATTR{idProduct}=="4ee1",RUN+="/usr/local/bin/androiddocked.sh %s{idVendor} %s{idProduct}"
 #For when phone is a Camera (PTP)
-ACTION=="add",SUBSYSTEM=="usb",ATTR{idVendor}=="18d1",ATTR{idProduct}=="4ee5",RUN+="/home/debian/AndroidCarAudioDock/phone_docked.sh %s{idVendor} %s{idProduct}"
+ACTION=="add",SUBSYSTEM=="usb",ATTR{idVendor}=="18d1",ATTR{idProduct}=="4ee5",RUN+="/usr/local/bin/androiddocked.sh %s{idVendor} %s{idProduct}"
 #Samung S4
-ACTION=="add",SUBSYSTEM=="usb",ATTR{idVendor}=="04e8",ATTR{idProduct}=="6860",RUN+="/home/debian/AndroidCarAudioDock/phone_docked.sh %s{idVendor} %s{idProduct}"
+ACTION=="add",SUBSYSTEM=="usb",ATTR{idVendor}=="04e8",ATTR{idProduct}=="6860",RUN+="/usr/local/bin/androiddocked.sh %s{idVendor} %s{idProduct}"
 
