@@ -4,14 +4,14 @@ AndroidCarAudioDock
 Software for running a audio dock using Android Open Accessory Protocol 2.  
 USB audio over AOA2 is supported on all android devices 4.1 and up. 
 
-Current Features/limitations
-----------------------------
+## Current Features/limitations
+
 * audio loopback device between android device and sound card are made both at boot up and when plugged in when booted
 * play/pause command is sent to device when audio link is made. This should make the last open sound application start playing
 * Tested with Nexus 5 and Samsung S4, other devices can be added to udev rule file dock.rules
 
-Installation
-============
+### Installation
+
 OS
 --
 if on beaglebone black, use Debian 7.2 image from http://www.armhf.com/index.php/boards/beaglebone-black/#wheezy  
