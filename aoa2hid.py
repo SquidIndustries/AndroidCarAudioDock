@@ -35,9 +35,6 @@ picmediahid = [
 keyboardHid = picmediahid
 
 dev = usb.core.find(idVendor=int(sys.argv[1], 16), idProduct=int(sys.argv[2], 16))
-#if device is None:
-#    sys.exit("Could not find MagTek USB HID Swipe Reader.")
-
 
 #ACCESSORY_REGISTER_HID=54, Accessory assigned ID = 0x10(made up number)
 #Register a HID device with ID=0x10 
