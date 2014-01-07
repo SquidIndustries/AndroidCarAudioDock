@@ -3,6 +3,7 @@ import struct
 import sys
 import usb.core
 import time
+import threading
 
 #https://bitbucket.org/hardbyte/python-can/src/4baa9ebb48c1fa6702613c617972ea46b5d4206f/can/interfaces/socketcan_native.py?at=default
 #https://libbits.wordpress.com/2012/05/22/socketcan-support-in-python/
@@ -37,35 +38,45 @@ picmediahid = [
 0xc0            # END_COLLECTION
 ]
 
-
-keyboardHid = picmediahid
-#Find Device in AOA2 audio out mode 18d1 = Google 2d02 = AOA2 Audio Mode
-#other possible ID's: 0x2D03 = audio + adb, 0x2D04 = accessory + audio, 0x2D05 = accessory + audio + adb
-#so far all devices tried identify themselves to be 18d1 & 2d02 once put into audio out mode, regardless of original manufacturer
-dev = usb.core.find(idVendor=0x18d1, idProduct=0x2d02)
-
-
-#ACCESSORY_REGISTER_HID=54, Accessory assigned ID = 0x10(made up number)
-#Register a HID device with ID=0x10
-#ctrl_transfer( bmRequestType, bRequest, wValue, wIndex, data_or_wLength=None, timeo$
-
-dev.ctrl_transfer(0x40, 54,0x10, len(keyboardHid), "")
-
-
-#ACCESSORY_SET_HID_REPORT_DESC=56
-#send HID Descriptor
-dev.ctrl_transfer(0x40, 56,0x10, 0, keyboardHid,1000)
-
 Previous_cmd = [0x01] #Previous Track
 Next_cmd = [0x02] #Next Track
 Play_cmd = [0x04] #Play/Pause
 Stop_cmd = [0x08] #Stop
+NoKeys_cmd = [0x00] #no key pressed
 
-#send HID Event
-dev.ctrl_transfer(0x40, 57,0x10, 0,m,1000)
+keyboardHid = picmediahid
 
-#send HID event for no keys pressed, necessary or key pressed will repeat themselves
-dev.ctrl_transfer(0x40, 57,0x10, 0,0x00,1000)
+#================AOA2 HID Thread Function==================
+class AOA2HID(threading.Thread):
+        def __init__(self):
+                threading.Thread.__init__(self)
+                #Find Device in AOA2 audio out mode 18d1 = Google 2d02 = AOA2 Audio Mode
+                #other possible ID's: 0x2D03 = audio + adb, 0x2D04 = accessory + audio, 0x2D05 = accessory + audio + adb
+                #so far all devices tried identify themselves to be 18d1 & 2d02 once put into audio out mode, regardless of original$
+                self.dev = usb.core.find(idVendor=0x18d1, idProduct=0x2d02)
+                #Register a HID device with made up ID=0x10, ACCESSORY_REGISTER_HID=54
+                self.dev.ctrl_transfer(0x40, 54,0x10, len(keyboardHid), "")
+                #send HID Descriptor, ACCESSORY_SET_HID_REPORT_DESC=56
+                self.dev.ctrl_transfer(0x40, 56,0x10, 0, keyboardHid,1000)
+                self.NotRunning = True
+                self.cmd = [0x00]
+                print("made thread")
+        def run(self):
+                if self.NotRunning:
+                        self.NotRunning = False
+                        #send HID Event
+                        self.dev.ctrl_transfer(0x40, 57,0x10, 0,self.cmd,1000)
+                        #send HID event for no keys pressed, necessary or key pressed will repeat themselves
+                        self.dev.ctrl_transfer(0x40, 57,0x10, 0,NoKeys_cmd,1000)
+                        self.NotRunning = True
+                        print("command made")
+                        print(self.cmd)
+        def __del__(self):
+                #unregister HID Device, ACCESSORY_UNREGISTER_HID = 55
+                self.dev.ctrl_transfer(0x40, 55,0x10, 0, "")
+
+
+
 
 #---------------- HID Stuff End -------------------
 
@@ -87,7 +98,11 @@ if len(sys.argv) != 2:
 # create a raw socket and bind it to the given CAN interface
 s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 s.bind((sys.argv[1],))
- 
+
+hid = AOA2HID()
+hid.cmd = Play_cmd
+hid.start()
+
 while True:
 	# Fetching the Arb ID, DLC and Data
         try:
@@ -103,14 +118,26 @@ while True:
                                 print("Ping")
                         elif int_data == 0x0CE0: #Up Button
                                 print("Up Button")
-                        elif int_data == 0x0CD0: #Up Button
+                                hid.cmd = Next_cmd
+                                hid.start()
+                        elif int_data == 0x0CD0: #Down Button
                                 print("Down Button")
+                                hid.cmd = Previous_cmd
+                                hid.start()
                         elif int_data == 0x0CC1: #Phone Button
                                 print("Phone Button")
+                                hid.cmd = Play_cmd
+                                hid.start()
                         elif int_data == 0x0DC0: #Voice Button
                                 print("Voice Button")
-
         except KeyboardInterrupt:
                 print("\n\nCaught Keyboard interupt")
                 exit()
-	
+                del hid
+
+#Previous_cmd = [0x01] #Previous Track
+#Next_cmd = [0x02] #Next Track
+#Play_cmd = [0x04] #Play/Pause
+#Stop_cmd = [0x08] #Stop
+#NoKeys_cmd = [0x00] #no key pressed
+
