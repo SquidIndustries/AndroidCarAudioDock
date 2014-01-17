@@ -58,25 +58,24 @@ class AOA2HID(threading.Thread):
                 self.dev.ctrl_transfer(0x40, 54,0x10, len(keyboardHid), "")
                 #send HID Descriptor, ACCESSORY_SET_HID_REPORT_DESC=56
                 self.dev.ctrl_transfer(0x40, 56,0x10, 0, keyboardHid,1000)
-                self.NotRunning = True
-                self.cmd = [0x00]
+                self.Running = True
+                self.cmd = [0x00] #holds current command
                 print("made thread")
         def run(self):
-                if self.NotRunning:
-                        self.NotRunning = False
+                while self.Running:
+                        threadEvent.wait() #wait without timeout for trigger to do something
                         #send HID Event
-                        self.dev.ctrl_transfer(0x40, 57,0x10, 0,self.cmd,1000)
-                        #send HID event for no keys pressed, necessary or key pressed will repeat themselves
-                        self.dev.ctrl_transfer(0x40, 57,0x10, 0,NoKeys_cmd,1000)
-                        self.NotRunning = True
-                        print("command made")
-                        print(self.cmd)
+                        if self.Running:
+                                self.dev.ctrl_transfer(0x40, 57,0x10, 0,self.cmd,1000)
+                                #send HID event for no keys pressed, necessary or key pressed will repeat themselves
+                                self.dev.ctrl_transfer(0x40, 57,0x10, 0,NoKeys_cmd,1000)
+                                threadEvent.clear() #done, clear set flag
+                print("dead")
         def __del__(self):
                 #unregister HID Device, ACCESSORY_UNREGISTER_HID = 55
                 self.dev.ctrl_transfer(0x40, 55,0x10, 0, "")
-
-
-
+                self.Running = False
+                threadEvent.set() #set flag so run() gets out of wait state
 
 #---------------- HID Stuff End -------------------
 
@@ -99,6 +98,8 @@ if len(sys.argv) != 2:
 s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 s.bind((sys.argv[1],))
 
+threadEvent = threading.Event()
+
 hid = AOA2HID()
 hid.cmd = Play_cmd
 hid.start()
@@ -109,31 +110,30 @@ while True:
                 cf, addr = s.recvfrom(16)
                 can_id, can_dlc, data = dissect_can_frame(cf)
                 print('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
-
                 if can_id == 470:
                         print("CAN ID Caught")
                         int_data = int.from_bytes(data,byteorder='little',signed=False)
-                        #print(int_data)
-                        if int_data == 0x0CC0: #No Keys Pressed (ping)
-                                print("Ping")
-                        elif int_data == 0x0CE0: #Up Button
-                                print("Up Button")
-                                hid.cmd = Next_cmd
-                                hid.start()
-                        elif int_data == 0x0CD0: #Down Button
-                                print("Down Button")
-                                hid.cmd = Previous_cmd
-                                hid.start()
-                        elif int_data == 0x0CC1: #Phone Button
-                                print("Phone Button")
-                                hid.cmd = Play_cmd
-                                hid.start()
-                        elif int_data == 0x0DC0: #Voice Button
-                                print("Voice Button")
+                        if not threadEvent.is_set():
+                                if int_data == 0x0CC0: #No Keys Pressed (ping)
+                                        print("Ping")
+                                elif int_data == 0x0CE0: #Up Button
+                                        print("Up Button")
+                                        hid.cmd = Next_cmd
+                                        threadEvent.set()
+                                elif int_data == 0x0CD0: #Down Button
+                                        print("Down Button")
+                                        hid.cmd = Previous_cmd
+                                        threadEvent.set()
+                                elif int_data == 0x0CC1: #Phone Button
+                                        print("Phone Button")
+                                        hid.cmd = Play_cmd
+                                        threadEvent.set()
+                                elif int_data == 0x0DC0: #Voice Button
+                                        print("Voice Button")
         except KeyboardInterrupt:
                 print("\n\nCaught Keyboard interupt")
-                exit()
                 del hid
+                exit()
 
 #Previous_cmd = [0x01] #Previous Track
 #Next_cmd = [0x02] #Next Track
