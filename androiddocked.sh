@@ -2,7 +2,7 @@
 
 # Put android device into AOA2 usb audio out mode
 /usr/local/bin/aoa2usbaudio.py $1 $2
-
+/usr/local/bin/CANAOA2ctrl.py
 # wait 3 seconds for device to switch over, then connect android device to output device, wait 3seconds and send HID play/pause command
 # AOA2 is 16bit 2 channel, 44.1hkz
 # 50ms buffer

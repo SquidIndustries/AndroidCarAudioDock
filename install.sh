@@ -20,3 +20,6 @@ chmod +x ./aoa2hid.py
 cp ./aoa2hid.py /usr/local/bin/
 chmod +x ./aoa2usbaudio.py
 cp ./aoa2usbaudio.py /usr/local/bin/
+#comment the 2 following lines if youre not going to use CAN
+chmod +x ./CANAOA2ctrl.py
+cp CANAOA2ctrl.py /usr/local/bin/
