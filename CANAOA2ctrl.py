@@ -8,6 +8,10 @@ import threading
 import os
 import logging
 
+#To Do
+# close all threads and exit gracefully when android device goes away
+# wait for CAN bus to come up for a peroid of time before erroring out. this is needed for boot up with device connected
+
 #https://bitbucket.org/hardbyte/python-can/src/4baa9ebb48c1fa6702613c617972ea46b5d4206f/can/interfaces/socketcan_native.py?at=default
 #https://libbits.wordpress.com/2012/05/22/socketcan-support-in-python/
 #http://www.loopybunny.co.uk/CarPC/can/1D6.html 
@@ -78,6 +82,7 @@ NoKeys_cmd = [0x00] #no key pressed
 keyboardHid = picmediahid
 
 #================AOA2 HID Thread Function==================
+
 class USBdevSetup(threading.Thread):
 	def __init__(self):
 		threading.Thread.__init__(self)
@@ -88,14 +93,16 @@ class USBdevSetup(threading.Thread):
 		#send HID Descriptor, ACCESSORY_SET_HID_REPORT_DESC=56
 		usbdev.ctrl_transfer(0x40, 56,0x10, 0, keyboardHid,1000)
 		self.Running = True
-		print(usbdev)
+		logger.debug(usbdev)
+		#print(usbdev)
 	def run(self):
 		global usbdev
 		while self.Running:
 			usbdev = usb.core.find(idVendor=0x18d1, idProduct=0x2d02) #make sure device is still present
 			if usbdev is None:
-				os._exit(1) #device is no longer present, kill program
-			time.sleep(5)	
+				logger.debug('No USB device found in peroidic check...exiting')
+				sys.exit(1)#os._exit(1) #device is no longer present, kill program
+			time.sleep(30)	
 	def __del__(self):
 		global usbdev
 		#unregister HID Device, ACCESSORY_UNREGISTER_HID = 55
@@ -113,8 +120,11 @@ class AOA2HID(threading.Thread):
             if self.Running:
                 global usbdev
                 usbdev = usb.core.find(idVendor=0x18d1, idProduct=0x2d02) #make sure device is still present
+                logger.debug(usbdev)
                 if usbdev is None:
-                    os._exit(1) #device is no longer present, kill program 
+                    logger.debug('No USB device...exiting')
+                    sys.exit(1) #os._exit() #device is no longer present, kill program 
+                    threadEvent.clear() #put this here for now so it doesnt go into a infine loop
                 else:
                     usbdev.ctrl_transfer(0x40, 57,0x10, 0,self.cmd,1000)
                     #send HID event for no keys pressed, necessary or key pressed will repeat themselves
@@ -138,15 +148,18 @@ def dissect_can_frame(frame):
         return (can_id, can_dlc, data[:can_dlc])
  
 # create a raw socket and bind it to the given CAN interface
+ 
 s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 s.bind(('can0',))
 
 threadEvent = threading.Event()
 
 usbchecker = USBdevSetup()
+usbchecker.setDaemon(False)
 usbchecker.start()
 
 hid = AOA2HID()
+hid.setDaemon(False)
 hid.cmd = Play_cmd
 hid.start()
 
@@ -155,27 +168,37 @@ while True:
         try:
                 cf, addr = s.recvfrom(16)
                 can_id, can_dlc, data = dissect_can_frame(cf)
-                #print('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
+                logger.debug('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
                 if can_id == 470:
+                        if (not (hid.isAlive() & usbchecker.isAlive())):
+                                logger.debug("threads are dead")
+                                exit(1)
                         int_data = int.from_bytes(data,byteorder='little',signed=False)
+                        logger.debug(int_data)
                         if not threadEvent.is_set(): #check to see if thread is already busy
                                 #0x0CC0: #No Keys Pressed (ping)
                                 if int_data == 0x0CE0: #Up Button
-                                        print("Up Button")
+                                        logger.debug("Up Button")
                                         hid.cmd = Next_cmd
                                         threadEvent.set()
                                 elif int_data == 0x0CD0: #Down Button
-                                        print("Down Button")
+                                        logger.debug("Down Button")
                                         hid.cmd = Previous_cmd
                                         threadEvent.set()
                                 elif int_data == 0x0CC1: #Phone Button
-                                        print("Phone Button")
+                                        logger.debug("Phone Button")
                                         hid.cmd = Play_cmd
                                         threadEvent.set()
                                 elif int_data == 0x0DC0: #Voice Button
-                                        print("Voice Button")
+                                        logger.debug("Voice Button")
         except KeyboardInterrupt:
                 print("\n\nCaught Keyboard interupt")
                 del usbchecker
                 del hid
                 exit()
+
+        except OSError: #to catch when can bus isnt setup yet
+                logger.debug("OSerror")
+                time.sleep(1)
+                continue
+                break
