@@ -22,7 +22,7 @@ can_frame_fmt = "=IB3x8s"
 logger = logging.getLogger('CANAOA2ctrl.py')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
-fh = logging.FileHandler('/tmp/CANAOA2.log')
+fh = logging.FileHandler('/mnt/SDcard/CANAOA2.log')
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()
@@ -155,11 +155,11 @@ s.bind(('can0',))
 threadEvent = threading.Event()
 
 usbchecker = USBdevSetup()
-usbchecker.setDaemon(False)
+usbchecker.daemon = True
 usbchecker.start()
 
 hid = AOA2HID()
-hid.setDaemon(False)
+hid.daemon = True
 hid.cmd = Play_cmd
 hid.start()
 
@@ -168,8 +168,9 @@ while True:
         try:
                 cf, addr = s.recvfrom(16)
                 can_id, can_dlc, data = dissect_can_frame(cf)
-                logger.debug('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
+#                logger.debug('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
                 if can_id == 470:
+                        logger.debug('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
                         if (not (hid.isAlive() & usbchecker.isAlive())):
                                 logger.debug("threads are dead")
                                 exit(1)
