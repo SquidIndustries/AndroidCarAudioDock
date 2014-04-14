@@ -15,13 +15,12 @@
 #(sleep 3s ; /usr/local/bin/aoa2hid.py 18d1 2d02)
 
 #
-if /bin/grep --quiet BB-DCAN1 /sys/devices/bone_capemgr.*/slots; then
+if /sbin/ifconfig | /bin/grep --quiet can0; then
   #CAN is already setup, just run CAN interface code
-  (sleep 3s ; /usr/local/bin/python3.3 /usr/local/bin/CANAOA2ctrl.py)&
+  /usr/local/bin/python3.3 /usr/local/bin/CANAOA2ctrl.py&
 else
-  /bin/echo BB-DCAN1 > /sys/devices/bone_capemgr.*/slots
-  sleep 0.1s
-  /bin/ip link set can0 type can bitrate 100000 triple-sampling on
-  /bin/ip link set can0 up
-  (sleep 3s ; /usr/local/bin/python3.3 /usr/local/bin/CANAOA2ctrl.py)&
+  #CAN isn't up, must be booting, wait for it to come up
+  (sleep 25s ; /usr/local/bin/python3.3 /usr/local/bin/CANAOA2ctrl.py)&
 fi
+
+exit 0

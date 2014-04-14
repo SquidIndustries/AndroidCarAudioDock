@@ -129,6 +129,7 @@ class AOA2HID(threading.Thread):
                     usbdev.ctrl_transfer(0x40, 57,0x10, 0,self.cmd,1000)
                     #send HID event for no keys pressed, necessary or key pressed will repeat themselves
                     usbdev.ctrl_transfer(0x40, 57,0x10, 0,NoKeys_cmd,1000)
+                    time.sleep(0.250)
                     threadEvent.clear() #done, clear set flag
     def __del__(self):
         self.Running = False
