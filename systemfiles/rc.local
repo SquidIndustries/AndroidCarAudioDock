@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+#add loopback audio device for android device if it is connected
+#/home/debian/AndroidCarAudioDock/start_up.sh
+
+#/home/debian/AndroidCarAudioDock/dev/setupCAN.sh
+
+/bin/echo BB-DCAN1 > /sys/devices/bone_capemgr.*/slots 
+sleep 0.1s
+/bin/ip link set can0 type can bitrate 100000 triple-sampling on
+/bin/ip link set can0 up
+
+
+exit 0
