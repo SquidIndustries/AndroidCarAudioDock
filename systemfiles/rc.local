@@ -11,10 +11,6 @@
 #
 # By default this script does nothing.
 
-#add loopback audio device for android device if it is connected
-#/home/debian/AndroidCarAudioDock/start_up.sh
-
-#/home/debian/AndroidCarAudioDock/dev/setupCAN.sh
 
 /bin/echo BB-DCAN1 > /sys/devices/bone_capemgr.*/slots 
 sleep 0.1s
