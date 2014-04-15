@@ -163,7 +163,7 @@ hid = AOA2HID()
 hid.daemon = True
 hid.cmd = Play_cmd
 hid.start()
-threadEvent.set() #send play command
+#threadEvent.set() #send play command
 
 while True:
 	# Fetching the Arb ID, DLC and Data
