@@ -1,5 +1,70 @@
+#Acer
+SUBSYSTEM=="usb", ATTR{idVendor}=="0502",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#ASUS
+SUBSYSTEM=="usb", ATTR{idVendor}=="0b05",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Dell
+SUBSYSTEM=="usb", ATTR{idVendor}=="413c",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Foxconn
+SUBSYSTEM=="usb", ATTR{idVendor}=="0489",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Fujitsu & Fujitsu Toshiba
+SUBSYSTEM=="usb", ATTR{idVendor}=="04c5",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Garmin-Asus
+SUBSYSTEM=="usb", ATTR{idVendor}=="091e",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
 #Google
-ACTION=="add",SUBSYSTEM=="usb",ATTR{idVendor}=="18d1",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+SUBSYSTEM=="usb", ATTR{idVendor}=="18d1",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Haier
+SUBSYSTEM=="usb", ATTR{idVendor}=="201e",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Hisense
+SUBSYSTEM=="usb", ATTR{idVendor}=="109b",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#HTC
+SUBSYSTEM=="usb", ATTR{idVendor}=="0bb4",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Huawei
+SUBSYSTEM=="usb", ATTR{idVendor}=="12d1",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#K-Touch
+SUBSYSTEM=="usb", ATTR{idVendor}=="24e3",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#KT Tech
+SUBSYSTEM=="usb", ATTR{idVendor}=="2116",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Kyocera
+SUBSYSTEM=="usb", ATTR{idVendor}=="0482",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Lenovo
+SUBSYSTEM=="usb", ATTR{idVendor}=="17ef",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#LG
+SUBSYSTEM=="usb", ATTR{idVendor}=="1004",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Motorola
+SUBSYSTEM=="usb", ATTR{idVendor}=="22b8",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#MTK
+SUBSYSTEM=="usb", ATTR{idVendor}=="0e8d",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#NEC
+SUBSYSTEM=="usb", ATTR{idVendor}=="0409",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Nook
+SUBSYSTEM=="usb", ATTR{idVendor}=="2080",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Nvidia
+SUBSYSTEM=="usb", ATTR{idVendor}=="0955",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#OTGV
+SUBSYSTEM=="usb", ATTR{idVendor}=="2257",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Pantech
+SUBSYSTEM=="usb", ATTR{idVendor}=="10a9",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Pegatron
+SUBSYSTEM=="usb", ATTR{idVendor}=="1d4d",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Philips
+SUBSYSTEM=="usb", ATTR{idVendor}=="0471",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#PMC-Sierra
+SUBSYSTEM=="usb", ATTR{idVendor}=="04da",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Qualcomm
+SUBSYSTEM=="usb", ATTR{idVendor}=="05c6",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#SK Telesys
+SUBSYSTEM=="usb", ATTR{idVendor}=="1f53",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
 #Samsung
-ACTION=="add",SUBSYSTEM=="usb",ATTR{idVendor}=="04e8",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
-
+SUBSYSTEM=="usb", ATTR{idVendor}=="04e8",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Sharp
+SUBSYSTEM=="usb", ATTR{idVendor}=="04dd",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Sony
+SUBSYSTEM=="usb", ATTR{idVendor}=="054c",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Sony Ericsson
+SUBSYSTEM=="usb", ATTR{idVendor}=="0fce",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Teleepoch
+SUBSYSTEM=="usb", ATTR{idVendor}=="2340",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#Toshiba
+SUBSYSTEM=="usb", ATTR{idVendor}=="0930",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
+#ZTE
+SUBSYSTEM=="usb", ATTR{idVendor}=="19d2",RUN+="/usr/local/bin/dockLauncher.sh %s{idVendor} %s{idProduct}"
