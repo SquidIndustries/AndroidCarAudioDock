@@ -16,6 +16,8 @@
 cp ./systemfiles/dock.rules /etc/udev/rules.d/
 chmod +x ./systemfiles/rc.local
 cp ./systemfiles/rc.local /etc/
+chmod +x dockLauncher.sh
+cp ./dockLauncher.sh /usr/local/bin/
 chmod +x ./androiddocked.sh
 cp ./androiddocked.sh /usr/local/bin/
 chmod +x ./aoa2hid.py 
