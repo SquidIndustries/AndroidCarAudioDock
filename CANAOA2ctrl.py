@@ -22,7 +22,7 @@ can_frame_fmt = "=IB3x8s"
 logger = logging.getLogger('CANAOA2ctrl.py')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
-fh = logging.FileHandler('/mnt/SDcard/CANAOA2.log')
+fh = logging.FileHandler('/tmp/CANAOA2.log')
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()
@@ -101,7 +101,7 @@ class USBdevSetup(threading.Thread):
 			usbdev = usb.core.find(idVendor=0x18d1, idProduct=0x2d02) #make sure device is still present
 			if usbdev is None:
 				logger.debug('No USB device found in peroidic check...exiting')
-				os._exit(1) #sys.exit(1)#os._exit(1) #device is no longer present, kill program
+				os._exit(1) #device is no longer present, kill program
 			time.sleep(2)	
 	def __del__(self):
 		global usbdev
@@ -123,8 +123,7 @@ class AOA2HID(threading.Thread):
                 logger.debug(usbdev)
                 if usbdev is None:
                     logger.debug('No USB device...exiting')
-                    os._exit() #sys.exit(1) #os._exit() #device is no longer present, kill program 
-                    threadEvent.clear() #put this here for now so it doesnt go into a infine loop
+                    os._exit(1) #device is no longer present, kill program 
                 else:
                     usbdev.ctrl_transfer(0x40, 57,0x10, 0,self.cmd,1000)
                     #send HID event for no keys pressed, necessary or key pressed will repeat themselves
@@ -149,10 +148,22 @@ def dissect_can_frame(frame):
         return (can_id, can_dlc, data[:can_dlc])
  
 # create a raw socket and bind it to the given CAN interface
- 
-s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
-s.bind(('can0',))
 
+try: 
+	s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
+	logger.debug(s)
+except:
+        e = sys.exc_info()[0]
+        logger.debug("<p>Error1: %s</p>" % e )
+
+
+try:
+	s.bind(('can0',))
+	logger.debug(s)
+except:
+	e = sys.exc_info()[0]
+	logger.debug("<p>Error2: %s</p>" % e )
+	
 threadEvent = threading.Event()
 
 usbchecker = USBdevSetup()
@@ -175,6 +186,8 @@ while True:
                         logger.debug('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
                         if (not (hid.isAlive() & usbchecker.isAlive())):
                                 logger.debug("threads are dead")
+                                logger.debug(hid.isAlive())
+                                logger.debug(usbchecker.isAlive())
                                 exit(1)
                         int_data = int.from_bytes(data,byteorder='little',signed=False)
                         logger.debug(int_data)

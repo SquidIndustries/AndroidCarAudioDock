@@ -10,14 +10,24 @@
 #	 5 or auto       - automatically selects the best method
 #	 in this order: captshift, playshift,
 #        samplerate, simple
-(sleep 3s ; alsaloop -P hw:1,0,0 -C hw:2,0,0 -f S16_LE -r 44100 -t 50000 -S 2)&
+(sleep 1s ; alsaloop -P hw:1,0,0 -C hw:2,0,0 -f S16_LE -r 44100 -t 50000 -S 2)&
 echo "Dock: Alsaloop up" > /dev/kmsg
 
 #send play command to android device
-(sleep 3s ; /usr/local/bin/aoa2hid.py 18d1 2d02)&
+#all devices tested thus far have shown up with these IDs when in AOA2 Audio mode
+#so hard coded
+(sleep 1s ; /usr/local/bin/aoa2hid.py 18d1 2d02)
 echo "Dock: Play command sent to android device" > /dev/kmsg
 
 #CAN stuff
+
+#check to see if a old instance of CANAOA2ctrl is running and kill it if found
+#this should never do anything but is here just in case
+if (/bin/ps aux | /bin/grep --quiet '[C]ANAOA2ctrl.py'); then
+   echo "Dock: Found a still running instance of CANAOA2ctrl, killing it" > /dev/kmsg
+   kill $(ps aux | grep '[C]ANAOA2ctrl.py' | awk '{print $2}')
+fi
+
 COUNTER=0
 while [  $COUNTER -lt 90 ]; do #try 90 times, 1 sec apart for CAN bus to come up
   if /sbin/ifconfig | /bin/grep --quiet can0; then
